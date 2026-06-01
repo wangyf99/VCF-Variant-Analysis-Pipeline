@@ -43,9 +43,9 @@ def is_transition(ref: str, alt: str):
 
 def compute_titv(df: pd.DataFrame) -> float:
     """Ti/Tv ratio for SNPs only. Expected ~2.0-2.1 for WGS."""
-    snps = df[df["variant_type"] == "SNP"].copy()
-    ti = snps["is_transition"].sum()
-    tv = (~snps["is_transition"]).sum()
+    snps = df[df["variant_type"] == "SNP"]["is_transition"].dropna().astype(bool)
+    ti = snps.sum()
+    tv = (~snps).sum()
     return round(ti / tv, 3) if tv > 0 else float("nan")
 
 
